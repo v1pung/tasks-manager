@@ -1,0 +1,33 @@
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: task_manager
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-test-schema.sql:/docker-entrypoint-initdb.d/init-test-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d task_manager"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: 'db'
+      POSTGRES_PORT: 5432
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
