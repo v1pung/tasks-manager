@@ -24,7 +24,7 @@ FastAPI-приложение для управления задачами с и�
 
 1. **Клонировать репозиторий**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/v1pung/tasks-manager.git
    cd tasks-manager
    ```
 
